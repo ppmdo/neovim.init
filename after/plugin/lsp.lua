@@ -17,7 +17,7 @@ end)
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  ensure_installed = {'tsserver', 'rust_analyzer'},
+  ensure_installed = {'tsserver', 'rust_analyzer', 'pylsp'},
   handlers = {
     lsp_zero.default_setup,
     lua_ls = function()
@@ -43,4 +43,20 @@ cmp.setup({
     ['<C-y>'] = cmp.mapping.confirm({ select = true }),
     ['<C-Space>'] = cmp.mapping.complete(),
   }),
+})
+
+require('lspconfig').pylsp.setup({
+    settings = {
+    pylsp = {
+      plugins = {
+        pycodestyle = {
+          ignore = {'W391'},
+          maxLineLength = 100
+        },
+        rope_autoimport = {
+          enabled = true
+        },
+      }
+    }
+  }
 })
