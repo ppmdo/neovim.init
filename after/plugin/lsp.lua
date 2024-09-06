@@ -50,7 +50,7 @@ require('lspconfig').pylsp.setup({
     pylsp = {
       plugins = {
         pycodestyle = {
-          ignore = {'W391'},
+          ignore = {'W391', 'E501', 'E126', 'W293', 'W291'},
           maxLineLength = 100
         },
         rope_autoimport = {
