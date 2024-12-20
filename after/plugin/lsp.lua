@@ -17,7 +17,7 @@ end)
 
 require('mason').setup({})
 require('mason-lspconfig').setup({
-  ensure_installed = {'tsserver', 'rust_analyzer', 'pylsp'},
+  ensure_installed = {'pyright', 'ruff'},
   handlers = {
     lsp_zero.default_setup,
     lua_ls = function()
@@ -45,18 +45,40 @@ cmp.setup({
   }),
 })
 
-require('lspconfig').pylsp.setup({
+-- Pyright configuration
+require('lspconfig').pyright.setup({
+    on_attach = function(client, bufnr)
+        local bufopts = { noremap=true, silent=true, buffer=bufnr }
+        vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
+        vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
+    end,
     settings = {
-    pylsp = {
-      plugins = {
-        pycodestyle = {
-          ignore = {'W391', 'E501', 'E126', 'W293', 'W291'},
-          maxLineLength = 100
+        python = {
+            analysis = {
+                typeCheckingMode = "strict", -- Enable strict type checking
+            },
         },
-        rope_autoimport = {
-          enabled = true
+    },
+})
+
+-- Ruff-LSP configuration
+require('lspconfig').ruff.setup({
+    on_attach = function(client, bufnr)
+        local bufopts = { noremap=true, silent=true, buffer=bufnr }
+        vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, bufopts)
+        vim.keymap.set("n", "]d", vim.diagnostic.goto_next, bufopts)
+        vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, bufopts)
+    end,
+    init_options = {
+        settings = {
+            ruff = {
+                organizeImports = true,
+                fixAll = true,
+                args = {
+                    "--ignore", "W391,E501,E126,W293,W291" -- Ignore specific warnings
+                },
+            },
         },
-      }
-    }
-  }
+    },
 })

@@ -49,3 +49,16 @@ vim.keymap.set("n", "<leader><leader>", function()
     vim.cmd("so")
 end)
 
+vim.keymap.set("n", "<leader>w", "<C-W>");
+vim.keymap.set("n", "<leader><Up>", "<C-W>+");
+vim.keymap.set("n", "<leader><Down>", "<C-W>-");
+vim.keymap.set("n", "<leader><Left>", "<C-W><");
+vim.keymap.set("n", "<leader><Right>", "<C-W>>");
+
+vim.api.nvim_set_keymap(
+  "n",
+  "<leader>q",
+  ":mksession! ~/.nvim_session<CR>:qa<CR>",
+  { noremap = true, silent = true }
+)
+

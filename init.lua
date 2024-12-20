@@ -15,21 +15,49 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
     {'nvim-lua/plenary.nvim'},
-    {'nvim-telescope/telescope.nvim', tag = '0.1.5'},
+    {'nvim-telescope/telescope.nvim', tag = '0.1.8'},
     {'rose-pine/neovim'},
     {'nvim-treesitter/nvim-treesitter'},
     {'mbbill/undotree'},
     {'tpope/vim-fugitive'},
 
-    --- Uncomment these if you want to manage LSP servers from neovim
+    -- Mason for managing LSP servers
     {'williamboman/mason.nvim'},
     {'williamboman/mason-lspconfig.nvim'},
 
+    -- LSP setup
     {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
     {'neovim/nvim-lspconfig'},
     {'hrsh7th/cmp-nvim-lsp'},
     {'hrsh7th/nvim-cmp'},
     {'L3MON4D3/LuaSnip'},
     {'github/copilot.vim'},
-    {'theprimeagen/harpoon', branch = 'harpoon2'}
+    {'theprimeagen/harpoon', branch = 'harpoon2'},
+    {'theprimeagen/vim-be-good'},
+    {'wellle/context.vim'},
+    {
+     "ray-x/lsp_signature.nvim",
+      event = "InsertEnter",
+      opts = {
+        bind = true,
+        handler_opts = {
+          border = "rounded"
+        }
+      },
+      config = function(_, opts) require'lsp_signature'.setup(opts) end
+    },
+
+    -- Ensure Ruff-LSP is installed and setup
+    {'jose-elias-alvarez/null-ls.nvim'},
 })
+
+
+-- Set up LSP diagnostics handler
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    update_in_insert = false,  -- Update diagnostics only after leaving insert mode
+    severity_sort = true,      -- Sort diagnostics by severity
+  }
+)
+
+vim.lsp.set_log_level("info")
