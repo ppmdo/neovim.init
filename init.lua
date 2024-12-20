@@ -49,6 +49,7 @@ require("lazy").setup({
 
     -- Ensure Ruff-LSP is installed and setup
     {'jose-elias-alvarez/null-ls.nvim'},
+    {'hiphish/rainbow-delimiters.nvim'},
 })
 
 
@@ -60,4 +61,11 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   }
 )
 
-vim.lsp.set_log_level("info")
+vim.lsp.set_log_level("OFF")
+
+-- Enable folding with Treesitter
+vim.o.foldmethod = 'expr'                -- Use expression-based folding
+vim.o.foldexpr = 'nvim_treesitter#foldexpr()'  -- Use Treesitter's fold expression
+vim.o.foldlevel = 99                     -- Set the initial fold level (99 = open everything)
+vim.o.foldlevelstart = 99                -- Start with everything unfolded
+vim.o.foldenable = true                  -- Enable folding
