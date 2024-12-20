@@ -56,7 +56,13 @@ require('lspconfig').pyright.setup({
     settings = {
         python = {
             analysis = {
-                typeCheckingMode = "strict", -- Enable strict type checking
+                -- Type checking level (this is where we reduce the "fascist" level)
+                typeCheckingMode = "basic",  -- "off", "basic", or "strict"
+                
+                -- Enable basic checks for errors (like undefined variables, etc.)
+                diagnosticMode = "openFiles",  -- Only analyze open files for diagnostics
+                autoSearchPaths = true,        -- Enable auto search for paths
+                useLibraryCodeForTypes = true, -- Allow Pyright to use library code for type information
             },
         },
     },
