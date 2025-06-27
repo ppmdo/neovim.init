@@ -26,12 +26,11 @@ require("lazy").setup({
     {'williamboman/mason-lspconfig.nvim'},
 
     -- LSP setup
-    {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x'},
+    {'VonHeikemen/lsp-zero.nvim', branch = 'v3.x', lazy=false},
     {'neovim/nvim-lspconfig'},
     {'hrsh7th/cmp-nvim-lsp'},
     {'hrsh7th/nvim-cmp'},
     {'L3MON4D3/LuaSnip'},
-    {'github/copilot.vim'},
     {'theprimeagen/harpoon', branch = 'harpoon2'},
     {'theprimeagen/vim-be-good'},
     {'wellle/context.vim'},
@@ -50,8 +49,53 @@ require("lazy").setup({
     -- Ensure Ruff-LSP is installed and setup
     {'jose-elias-alvarez/null-ls.nvim'},
     {'hiphish/rainbow-delimiters.nvim'},
-})
 
+    {
+      "yetone/avante.nvim",
+      event = "VeryLazy",
+      lazy = false,
+      version = false,
+      build = "make",
+      dependencies = {
+        "nvim-treesitter/nvim-treesitter",
+        "nvim-lua/plenary.nvim",
+        "MunifTanjim/nui.nvim",
+        --- The below dependencies are optional,
+        "echasnovski/mini.pick", -- for file_selector provider mini.pick
+        "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+        "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+        "ibhagwan/fzf-lua", -- for file_selector provider fzf
+        "stevearc/dressing.nvim", -- for input provider dressing
+        "folke/snacks.nvim", -- for input provider snacks
+        "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+        "zbirenbaum/copilot.lua", -- for providers='copilot'
+        {
+          -- support for image pasting
+          "HakonHarnes/img-clip.nvim",
+          event = "VeryLazy",
+          opts = {
+            -- recommended settings
+            default = {
+              embed_image_as_base64 = false,
+              prompt_for_file_name = false,
+              drag_and_drop = {
+                insert_mode = true,
+              },
+              -- required for Windows users
+              use_absolute_path = true,
+            },
+          },
+        },
+      },
+    },
+    {
+      "pmizio/typescript-tools.nvim",
+      dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+      opts = {},
+      event = "VeryLazy"
+    }
+
+})
 
 -- Set up LSP diagnostics handler
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
