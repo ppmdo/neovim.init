@@ -46,7 +46,6 @@ require("lazy").setup({
       config = function(_, opts) require'lsp_signature'.setup(opts) end
     },
 
-    -- Ensure Ruff-LSP is installed and setup
     {'jose-elias-alvarez/null-ls.nvim'},
     {'hiphish/rainbow-delimiters.nvim'},
 
