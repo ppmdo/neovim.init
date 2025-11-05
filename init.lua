@@ -92,8 +92,26 @@ require("lazy").setup({
       dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
       opts = {},
       event = "VeryLazy"
-    }
-
+    },
+    {
+    "zaldih/themery.nvim",
+    lazy = false,
+    config = function()
+      require("themery").setup({
+        themes = {
+            "catppuccin", 
+            "nightfox", 
+            "dayfox", 
+            "dawnfox", 
+            "nordfox", 
+            "terafox"
+        }, -- Your list of installed colorschemes.
+        livePreview = true, -- Apply theme while picking. Default to true.
+      })
+    end
+  },
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+  { "EdenEast/nightfox.nvim" } -- lazy
 })
 
 -- Set up LSP diagnostics handler

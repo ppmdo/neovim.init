@@ -31,6 +31,6 @@ require("avante").setup({
     width = 30,
   },
   behaviour = {
-    auto_suggestions = true
+    auto_suggestions = false
   },
 })
