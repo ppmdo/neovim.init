@@ -33,6 +33,14 @@ cmp.setup({
     ['<C-Space>'] = cmp.mapping.complete(),
   }),
 })
+-- Typescript Config
+require("lspconfig").vtsls.setup({
+  settings = {
+    typescript = {
+      inlayHints = { includeInlayParameterNameHints = "all" }
+    }
+  }
+})
 
 -- Pyright configuration
 require('lspconfig').pyright.setup({

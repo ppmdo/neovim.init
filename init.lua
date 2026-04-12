@@ -1,5 +1,14 @@
 require('devpabs')
 
+local function load_project_local()
+  local file = vim.fn.getcwd() .. "/.nvim.local.lua"
+  if vim.fn.filereadable(file) == 1 then
+    dofile(file)
+  end
+end
+
+load_project_local()
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system({
@@ -12,6 +21,14 @@ if not vim.loop.fs_stat(lazypath) then
     })
 end
 vim.opt.rtp:prepend(lazypath)
+vim.opt.autoread = true
+vim.opt.updatetime = 200
+
+local group = vim.api.nvim_create_augroup("AutoRead", { clear = true })
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHoldI" }, {
+  group = group,
+  callback = function() vim.cmd("checktime") end,
+})
 
 require("lazy").setup({
     {'nvim-lua/plenary.nvim'},
@@ -20,6 +37,12 @@ require("lazy").setup({
     {'nvim-treesitter/nvim-treesitter'},
     {'mbbill/undotree'},
     {'tpope/vim-fugitive'},
+    {
+     "lewis6991/gitsigns.nvim",
+     config = function()
+       require("gitsigns").setup()
+     end,
+    },
 
     -- Mason for managing LSP servers
     {'williamboman/mason.nvim'},
@@ -51,10 +74,34 @@ require("lazy").setup({
 
     {
       "yetone/avante.nvim",
-      event = "VeryLazy",
-      lazy = false,
+      cmd = {
+        "AvanteAsk",
+        "AvanteChat",
+        "AvanteToggle",
+        "AvanteClear",
+      },
       version = false,
       build = "make",
+      opts = {
+        provider = "bedrock",
+        providers = {
+          bedrock = {
+            model = "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
+            aws_region = "us-east-1",
+          },
+        },
+        mappings = {
+          ask = "<leader>aa",
+          edit = "<leader>ae",
+          refresh = "<leader>ar",
+          suggestion = {
+            accept = "<C-l>",
+            next = "<M-]>",
+            prev = "<M-[>",
+            dismiss = "<M-]>",
+          },
+	},
+      },
       dependencies = {
         "nvim-treesitter/nvim-treesitter",
         "nvim-lua/plenary.nvim",
@@ -88,12 +135,6 @@ require("lazy").setup({
       },
     },
     {
-      "pmizio/typescript-tools.nvim",
-      dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-      opts = {},
-      event = "VeryLazy"
-    },
-    {
     "zaldih/themery.nvim",
     lazy = false,
     config = function()
@@ -111,7 +152,57 @@ require("lazy").setup({
     end
   },
   { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
-  { "EdenEast/nightfox.nvim" } -- lazy
+  { "EdenEast/nightfox.nvim" }, -- lazy
+
+
+  -- Tmux integration
+  {
+    "christoomey/vim-tmux-navigator"
+  },
+  {
+  "nvim-neo-tree/neo-tree.nvim",
+  branch = "v3.x",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "nvim-tree/nvim-web-devicons",
+    "MunifTanjim/nui.nvim",
+  },
+  opts = {
+    filesystem = {
+      follow_current_file = {
+        enabled = true,
+        leave_dirs_open = false,
+      },
+      filtered_items = {
+        hide_dotfiles = false,
+      },
+    },
+   },
+  },
+  -- bufdelete
+  {
+    "famiu/bufdelete.nvim",
+  },
+  -- Bufferline (nice tabs)
+  {
+    "akinsho/bufferline.nvim",
+    version = "*",
+    dependencies = "nvim-tree/nvim-web-devicons",
+    config = function()
+      require("bufferline").setup({
+        options = {
+          offsets = {
+            {
+              filetype = "neo-tree",
+              text = "Neo-tree",
+              separator = true,
+            },
+          },
+          close_if_last_window = false,
+        },
+    })
+    end,
+  }
 })
 
 -- Set up LSP diagnostics handler

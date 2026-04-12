@@ -34,10 +34,11 @@ vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
-vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
-vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
-vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
-vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+-- quickfix nav
+vim.keymap.set("n", "]q", "<cmd>cnext<CR>zz")
+vim.keymap.set("n", "[q", "<cmd>cprev<CR>zz")
+vim.keymap.set("n", "]l", "<cmd>lnext<CR>zz")
+vim.keymap.set("n", "[l", "<cmd>lprev<CR>zz")
 
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
@@ -49,11 +50,21 @@ vim.keymap.set("n", "<leader><leader>", function()
     vim.cmd("so")
 end)
 
-vim.keymap.set("n", "<leader>w", "<C-W>");
-vim.keymap.set("n", "<leader><Up>", "<C-W>+");
-vim.keymap.set("n", "<leader><Down>", "<C-W>-");
-vim.keymap.set("n", "<leader><Left>", "<C-W><");
-vim.keymap.set("n", "<leader><Right>", "<C-W>>");
+-- split nav
+vim.keymap.set("n", "<C-h>", "<C-w>h")
+vim.keymap.set("n", "<C-j>", "<C-w>j")
+vim.keymap.set("n", "<C-k>", "<C-w>k")
+vim.keymap.set("n", "<C-l>", "<C-w>l")
+
+-- split manipulation
+vim.keymap.set("n", "<leader>w", "<C-W>")
+vim.keymap.set("n", "<leader><Up>", "<C-W>+")
+vim.keymap.set("n", "<leader><Down>", "<C-W>-")
+vim.keymap.set("n", "<leader><Left>", "<C-W><")
+vim.keymap.set("n", "<leader><Right>", "<C-W>>")
+vim.keymap.set("n", "<leader>sv", ":vsplit<CR>")
+vim.keymap.set("n", "<leader>sh", ":split<CR>")
+
 
 vim.api.nvim_set_keymap(
   "n",
@@ -62,3 +73,18 @@ vim.api.nvim_set_keymap(
   { noremap = true, silent = true }
 )
 
+-- neotree
+vim.keymap.set("n", "<leader>e", ":Neotree toggle<CR>")
+
+-- botright, yes baby
+vim.keymap.set("n", "<leader>tt", function()
+  vim.cmd("botright 12split | terminal")
+end, { desc = "Open terminal bottom" })
+
+
+-- bufferline
+vim.keymap.set("n", "<Tab>", ":BufferLineCycleNext<CR>", { silent = true })
+vim.keymap.set("n", "<S-Tab>", ":BufferLineCyclePrev<CR>", { silent = true })
+
+-- bufdelete
+vim.keymap.set("n", "<leader>x", "<cmd>Bdelete<CR>", { silent = true })
