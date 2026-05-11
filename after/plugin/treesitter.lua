@@ -19,15 +19,5 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 
-
-  rainbow = {
-    enable = true,
-    extended_mode = true, -- Highlight also non-bracket delimiters like html tags
-    max_file_lines = 1000, -- Disable for files with more than 1000 lines
-  },
-
-  folding = {
-    enable = true,  -- enable folding support
-    disable = {},  -- disable folding for certain languages if needed
-  },
+  indent = { enable = true },
 }

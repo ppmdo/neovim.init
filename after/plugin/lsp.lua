@@ -34,7 +34,7 @@ cmp.setup({
   }),
 })
 -- Typescript Config
-require("lspconfig").vtsls.setup({
+vim.lsp.config('vtsls', {
   settings = {
     typescript = {
       inlayHints = { includeInlayParameterNameHints = "all" }
@@ -42,8 +42,8 @@ require("lspconfig").vtsls.setup({
   }
 })
 
--- Pyright configuration
-require('lspconfig').pyright.setup({
+-- basedpyright configuration
+vim.lsp.config('basedpyright', {
   on_attach = function(client, bufnr)
     local bufopts = { noremap=true, silent=true, buffer=bufnr }
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
@@ -54,7 +54,7 @@ require('lspconfig').pyright.setup({
     python = {
       analysis = {
         typeCheckingMode = "basic",
-        diagnosticMode = "openFilesOnly", -- Use one consistent value
+        diagnosticMode = "openFilesOnly",
         autoSearchPaths = true,
         useLibraryCodeForTypes = true,
       },
@@ -63,9 +63,8 @@ require('lspconfig').pyright.setup({
 })
 
 -- Ruff configuration
-require('lspconfig').ruff.setup({
+vim.lsp.config('ruff', {
   on_attach = function(client, bufnr)
-    -- Disable Ruff's navigation capabilities to avoid conflicts with Pyright
     client.server_capabilities.definitionProvider = false
     client.server_capabilities.referencesProvider = false
     client.server_capabilities.hoverProvider = false
@@ -86,3 +85,5 @@ require('lspconfig').ruff.setup({
     },
   },
 })
+
+vim.lsp.enable({ 'vtsls', 'basedpyright', 'ruff' })

@@ -34,7 +34,7 @@ require("lazy").setup({
     {'nvim-lua/plenary.nvim'},
     {'nvim-telescope/telescope.nvim', tag = '0.1.8'},
     {'rose-pine/neovim'},
-    {'nvim-treesitter/nvim-treesitter'},
+    {'nvim-treesitter/nvim-treesitter', branch = 'master', build = ':TSUpdate'},
     {'mbbill/undotree'},
     {'tpope/vim-fugitive'},
     {
